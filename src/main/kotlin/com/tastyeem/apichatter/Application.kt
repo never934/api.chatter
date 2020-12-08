@@ -1,8 +1,15 @@
 package com.tastyeem.apichatter
 
+import com.tastyeem.apichatter.filters.JWTAuthorizationFilter
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.web.builders.HttpSecurity
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import springfox.documentation.builders.ApiInfoBuilder
 import springfox.documentation.builders.PathSelectors
 import springfox.documentation.builders.RequestHandlerSelectors
@@ -15,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2
 @EnableSwagger2
 @SpringBootApplication
 class Application {
+
 	@Bean
 	fun apiInfo(): ApiInfo {
 			val builder = ApiInfoBuilder()
@@ -36,10 +44,26 @@ class Application {
 				.apiInfo(apiInfo()).useDefaultResponseMessages(false)
 	}
 
-}
-	fun main(args: Array<String>) {
-			runApplication<Application>(*args)
+	@EnableWebSecurity
+	@Configuration
+	internal class WebSecurityConfig : WebSecurityConfigurerAdapter() {
+		@Throws(Exception::class)
+		override fun configure(http: HttpSecurity) {
+			http.csrf().disable()
+				.addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
+				.authorizeRequests()
+				.antMatchers(HttpMethod.POST, "/v1/nologin/auth")
+				.permitAll()
+				.anyRequest().authenticated()
+		}
 	}
+
+}
+
+fun main(args: Array<String>) {
+		runApplication<Application>(*args)
+}
+
 
 
 

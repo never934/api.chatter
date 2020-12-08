@@ -26,13 +26,7 @@ class NoLoginController(val userRepository: UserRepository) {
     @RequestMapping(method = [RequestMethod.POST], value = ["/auth"])
     @ApiOperation(value = "authentication of user")
     fun auth(@RequestBody authRequest: AuthRequest): ResponseEntity<TokenView> {
-        val user = userRepository.findAll().first { user -> user.login == authRequest.login }
-        if(user.passwordHash == authRequest.password){
-        //    val token = TokenUtils().createToken(user.id.toString())
-            return ResponseEntity.ok(TokenView("dsfdsfdsf"))
-        }else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null)
-        }
+        return ResponseEntity.ok().body(TokenView(TokenUtils().getJWTToken(authRequest.login) ?: ""))
     }
 
     @RequestMapping(method = [RequestMethod.POST], value = ["/register"])
@@ -49,6 +43,11 @@ class NoLoginController(val userRepository: UserRepository) {
                 updatedDate = 432432423
             )
         )
+    }
+
+    @RequestMapping(method = [RequestMethod.POST], value = ["/hello"])
+    fun hello() : ErrorView {
+        return ErrorView("hello")
     }
 
 }
