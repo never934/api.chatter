@@ -1,4 +1,4 @@
-package com.tastyeem.apichatter.models
+package com.tastyeem.apichatter.models.request
 
 data class AuthRequest(
     val login: String,
