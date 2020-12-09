@@ -96,12 +96,14 @@
 				<groupId>org.jetbrains.kotlin</groupId>
 				<artifactId>kotlin-maven-plugin</artifactId>
 				<configuration>
-					<args>
-						<arg>-Xjsr305=strict</arg>
-					</args>
 					<compilerPlugins>
 						<plugin>spring</plugin>
 					</compilerPlugins>
+					<sourceDirs>
+						<source>src/main/java</source>
+						<source>src/main/kotlin</source>
+						<source>src/main/resources</source>
+					</sourceDirs>
 				</configuration>
 				<dependencies>
 					<dependency>
