@@ -1,0 +1,1 @@
+package com.tastyeem.apichatter.utilsimport java.security.MessageDigestclass SecurityUtils {    fun getStringHash(string: String) : String {        val messageDigest: MessageDigest = MessageDigest.getInstance("SHA-256")        messageDigest.update(string.toByteArray())        return String(messageDigest.digest())    }}

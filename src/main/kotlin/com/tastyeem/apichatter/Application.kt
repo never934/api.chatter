@@ -52,7 +52,13 @@ class Application {
 			http.csrf().disable()
 				.addFilterAfter(JWTAuthorizationFilter(), UsernamePasswordAuthenticationFilter::class.java)
 				.authorizeRequests()
-				.antMatchers(HttpMethod.POST, "/v1/nologin/auth")
+				.antMatchers("/v1/nologin/*",
+					"/v2/api-docs",
+					"/configuration/ui",
+					"/swagger-resources/**",
+					"/configuration/security",
+					"/swagger-ui.html",
+					"/webjars/**")
 				.permitAll()
 				.anyRequest().authenticated()
 		}

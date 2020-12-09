@@ -8,7 +8,7 @@ import java.util.*
 data class User(
     @Id
     val id: UUID,
-    val login: String,
+    val nickname: String,
     val passwordHash: String,
     val email: String?,
     val createdDate: Long,

@@ -1,0 +1,1 @@
+package com.tastyeem.apichatterclass Strings {    companion object{        const val REGISTER_ERROR_NICKNAME = "Никнейм уже занят"        const val AUTH_ERROR_USER = "Пользователь не найден"        const val AUTH_ERROR_PASSWORD = "Неверный никнейм или пароль"    }}

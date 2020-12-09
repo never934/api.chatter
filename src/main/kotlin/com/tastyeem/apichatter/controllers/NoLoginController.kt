@@ -1,14 +1,16 @@
 package com.tastyeem.apichatter.controllers
 
 
-import com.tastyeem.apichatter.AppConst
-import com.tastyeem.apichatter.Application
+import com.tastyeem.apichatter.Strings
 import com.tastyeem.apichatter.models.db.User
 import com.tastyeem.apichatter.models.request.AuthRequest
 import com.tastyeem.apichatter.models.request.UserRequest
+import com.tastyeem.apichatter.models.view.BaseView
 import com.tastyeem.apichatter.models.view.ErrorView
-import com.tastyeem.apichatter.models.view.TokenView
+import com.tastyeem.apichatter.models.view.AuthView
 import com.tastyeem.apichatter.repository.UserRepository
+import com.tastyeem.apichatter.utils.SecurityUtils
+import com.tastyeem.apichatter.utils.TimeUtils
 import com.tastyeem.apichatter.utils.TokenUtils
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiOperation
@@ -25,29 +27,35 @@ class NoLoginController(val userRepository: UserRepository) {
 
     @RequestMapping(method = [RequestMethod.POST], value = ["/auth"])
     @ApiOperation(value = "authentication of user")
-    fun auth(@RequestBody authRequest: AuthRequest): ResponseEntity<TokenView> {
-        return ResponseEntity.ok().body(TokenView(TokenUtils().getJWTToken(authRequest.login) ?: ""))
+    fun auth(@RequestBody authRequest: AuthRequest): ResponseEntity<AuthView> {
+        val user = userRepository.findAll().firstOrNull{ user -> user.nickname == authRequest.nickname}
+            ?: return ResponseEntity(HttpStatus.NOT_FOUND)
+        if(user.passwordHash == SecurityUtils().getStringHash(authRequest.password)) {
+            val view = AuthView(user.id.toString(), TokenUtils().getJWTToken(authRequest.nickname) ?: "")
+            return ResponseEntity.ok().body(view)
+        }else{
+            return ResponseEntity(HttpStatus.BAD_REQUEST)
+        }
     }
 
     @RequestMapping(method = [RequestMethod.POST], value = ["/register"])
     @ApiOperation(value = "registration of new user")
-    fun register(@RequestBody userRequest: UserRequest) : User {
-        val passHash = userRequest.password
-        return userRepository.save(
+    fun register(@RequestBody userRequest: UserRequest) : ResponseEntity<AuthView> {
+        val time = TimeUtils().getUnixTime()
+        if(userRepository.findAll().firstOrNull { user -> user.nickname == userRequest.nickname } != null){
+            return ResponseEntity(HttpStatus.CONFLICT)
+        }
+        val user = userRepository.save(
             User(
                 id = UUID.randomUUID(),
-                login = userRequest.login,
-                passwordHash = passHash,
+                nickname = userRequest.nickname,
+                passwordHash = SecurityUtils().getStringHash(userRequest.password),
                 email = userRequest.email,
-                createdDate = 14324324,
-                updatedDate = 432432423
+                createdDate = time,
+                updatedDate = time
             )
         )
-    }
-
-    @RequestMapping(method = [RequestMethod.POST], value = ["/hello"])
-    fun hello() : ErrorView {
-        return ErrorView("hello")
+        return ResponseEntity.ok().body(AuthView(user.id.toString(),TokenUtils().getJWTToken(user.id.toString()) ?: ""))
     }
 
 }

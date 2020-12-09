@@ -1,0 +1,1 @@
+package com.tastyeem.apichatter.models.viewinterface BaseView {}
