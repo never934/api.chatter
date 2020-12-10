@@ -16,7 +16,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
-		<kotlin.version>1.4.20</kotlin.version>
+		<kotlin.version>1.4.10</kotlin.version>
 	</properties>
 
 	<dependencies>
@@ -85,6 +85,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>api-chatter</finalName>
 		<sourceDirectory>${project.basedir}/src/main/kotlin</sourceDirectory>
 		<testSourceDirectory>${project.basedir}/src/test/kotlin</testSourceDirectory>
 		<plugins>
