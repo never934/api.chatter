@@ -11,4 +11,5 @@ RUN mvn -f /home/app/pom.xml clean package
 #
 FROM openjdk:15-slim
 COPY --from=build /home/app/target/api-chatter.jar /usr/local/lib/api-chatter.jar
+EXPOSE 5998
 ENTRYPOINT ["java","-jar","/usr/local/lib/api-chatter.jar"]
