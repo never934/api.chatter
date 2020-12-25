@@ -1,0 +1,1 @@
+package com.tastyeem.apichatter.models.requestdata class ChatMessageRequest(    val message: String)

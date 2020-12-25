@@ -7,10 +7,11 @@ import java.util.*
 @Document
 data class User(
     @Id
-    val id: UUID,
+    val id: String,
     val nickname: String,
     val passwordHash: String,
-    val email: String?,
+    val avatarUrl: String? = null,
+    val email: String? = null,
     val createdDate: Long,
     val updatedDate: Long
 )

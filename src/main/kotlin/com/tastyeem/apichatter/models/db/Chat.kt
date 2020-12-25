@@ -1,0 +1,1 @@
+package com.tastyeem.apichatter.models.dbimport com.tastyeem.apichatter.models.view.UserViewimport org.springframework.data.annotation.Idimport org.springframework.data.mongodb.core.mapping.Documentimport java.util.*@Documentdata class Chat(    @Id    val id: String,    val userIds: List<String>,    val createdDate: Long,    val updatedDate: Long)

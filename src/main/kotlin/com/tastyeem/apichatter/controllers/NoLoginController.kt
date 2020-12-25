@@ -31,7 +31,7 @@ class NoLoginController(val userRepository: UserRepository) {
         val user = userRepository.findAll().firstOrNull{ user -> user.nickname == authRequest.nickname}
             ?: return ResponseEntity(HttpStatus.NOT_FOUND)
         if(user.passwordHash == SecurityUtils().getStringHash(authRequest.password)) {
-            val view = AuthView(user.id.toString(), TokenUtils().getJWTToken(authRequest.nickname) ?: "")
+            val view = AuthView(user.id.toString(), TokenUtils().getJWTToken(user.id.toString()) ?: "")
             return ResponseEntity.ok().body(view)
         }else{
             return ResponseEntity(HttpStatus.BAD_REQUEST)
@@ -47,7 +47,7 @@ class NoLoginController(val userRepository: UserRepository) {
         }
         val user = userRepository.save(
             User(
-                id = UUID.randomUUID(),
+                id = UUID.randomUUID().toString(),
                 nickname = userRequest.nickname,
                 passwordHash = SecurityUtils().getStringHash(userRequest.password),
                 email = userRequest.email,

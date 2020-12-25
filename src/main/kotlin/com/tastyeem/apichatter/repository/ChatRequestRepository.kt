@@ -1,0 +1,1 @@
+package com.tastyeem.apichatter.repositoryimport com.tastyeem.apichatter.models.db.Chatimport com.tastyeem.apichatter.models.db.ChatRequestimport org.springframework.data.mongodb.repository.MongoRepositoryimport org.springframework.stereotype.Repository@Repositoryinterface ChatRequestRepository : MongoRepository<ChatRequest, String> {}

@@ -1,0 +1,1 @@
+package com.tastyeem.apichatter.models.dbimport org.springframework.data.annotation.Idimport org.springframework.data.mongodb.core.mapping.Documentimport java.util.*@Documentdata class ChatRequest(    @Id    val id: String,    val senderId: String,    val receiverId: String,    val createdDate: Long,    val updatedDate: Long)
